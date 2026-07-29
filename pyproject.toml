@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ganfs"
+version = "0.1.0"
+description = "GANFS: GAN-based Feature Selection for Machine Learning"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+authors = [
+    {name = "Harsh Patel"},
+]
+keywords = [
+    "feature-selection",
+    "GAN",
+    "generative-adversarial-network",
+    "machine-learning",
+    "deep-learning",
+    "intrusion-detection",
+    "DDoS",
+    "cybersecurity",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "tensorflow>=2.0",
+    "numpy>=1.17",
+    "pandas>=1.0",
+    "scikit-learn>=0.22",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "build",
+]
+
+[project.urls]
+Homepage = "https://github.com/patelharsh15/GANFS-GAN-based-feature-selection"
+Repository = "https://github.com/patelharsh15/GANFS-GAN-based-feature-selection"
+Issues = "https://github.com/patelharsh15/GANFS-GAN-based-feature-selection/issues"
+
+[tool.setuptools.packages.find]
+include = ["ganfs*"]
