@@ -6,7 +6,10 @@ networks used in the GAN-based feature selection pipeline.
 """
 
 import tensorflow as tf
-from tensorflow.keras import layers, models
+
+# Use tf.keras to avoid conflicts with standalone keras/JAX installations
+layers = tf.keras.layers
+models = tf.keras.models
 
 
 def build_generator(input_dim, output_dim):

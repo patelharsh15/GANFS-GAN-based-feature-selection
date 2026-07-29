@@ -15,7 +15,10 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras import layers, models, optimizers
+# Use tf.keras directly to avoid conflicts with standalone keras / JAX installations
+layers = tf.keras.layers
+models = tf.keras.models
+optimizers = tf.keras.optimizers
 
 from ganfs.models import build_discriminator, build_generator
 from ganfs.sensitivity import (
