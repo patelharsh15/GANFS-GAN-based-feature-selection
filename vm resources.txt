@@ -1,0 +1,9 @@
+htop -u hpate033
+
+while true; do
+    clear
+    nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv | grep -E "$(pgrep -u hpate033 | tr '\n' '|')"
+    sleep 1
+done
+
+rm -rf folder_name
