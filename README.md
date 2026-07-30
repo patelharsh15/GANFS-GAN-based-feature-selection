@@ -148,9 +148,11 @@ The original research uses the **CIC-DDoS2019** dataset. The dataset files are t
 - TensorFlow 2.x (GPU support recommended)
 - NumPy, Pandas, scikit-learn
 
-## Citation
+## Acknowledgments
 
-If you use GANFS in your research, please cite:
+This project uses the **CIC-DDoS2019** dataset provided by the Canadian Institute for Cybersecurity, University of New Brunswick. 
+
+If you use the dataset, please cite the original authors:
 
 ```
 Iman Sharafaldin, Arash Habibi Lashkari, Saqib Hakak, and Ali A. Ghorbani,
