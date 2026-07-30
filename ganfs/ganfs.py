@@ -68,6 +68,10 @@ class GANFS(BaseEstimator, TransformerMixin):
     patience : int or None, default None
         Number of epochs to wait for discriminator loss improvement before
         stopping training early. If None, trains for all `epochs`.
+    generator_hidden_layers : tuple[int], default (64, 128)
+        Sizes of the hidden Dense layers for the generator.
+    discriminator_hidden_layers : tuple[int], default (128, 64)
+        Sizes of the hidden Dense layers for the discriminator.
 
     Attributes
     ----------
@@ -112,6 +116,8 @@ class GANFS(BaseEstimator, TransformerMixin):
         verbose=True,
         random_state=None,
         patience=None,
+        generator_hidden_layers=(64, 128),
+        discriminator_hidden_layers=(128, 64),
     ):
         self.epochs = epochs
         self.batch_size = batch_size
@@ -124,6 +130,8 @@ class GANFS(BaseEstimator, TransformerMixin):
         self.verbose = verbose
         self.random_state = random_state
         self.patience = patience
+        self.generator_hidden_layers = generator_hidden_layers
+        self.discriminator_hidden_layers = discriminator_hidden_layers
 
         # Internal state (set during fit)
         self.generator_ = None
@@ -415,6 +423,8 @@ class GANFS(BaseEstimator, TransformerMixin):
             'learning_rate': self.learning_rate,
             'perturbation_mode': self.perturbation_mode,
             'perturbation_factors': self.perturbation_factors,
+            'generator_hidden_layers': self.generator_hidden_layers,
+            'discriminator_hidden_layers': self.discriminator_hidden_layers,
         }
         with open(os.path.join(path, 'metadata.json'), 'w') as f:
             json.dump(metadata, f, indent=2)
@@ -445,6 +455,8 @@ class GANFS(BaseEstimator, TransformerMixin):
             learning_rate=metadata['learning_rate'],
             perturbation_mode=metadata['perturbation_mode'],
             perturbation_factors=metadata['perturbation_factors'],
+            generator_hidden_layers=metadata.get('generator_hidden_layers', (64, 128)),
+            discriminator_hidden_layers=metadata.get('discriminator_hidden_layers', (128, 64)),
         )
 
         instance.generator_ = tf.keras.models.load_model(
@@ -511,8 +523,15 @@ class GANFS(BaseEstimator, TransformerMixin):
     def _build_models(self):
         """Build generator, discriminator, and GAN models."""
         with tf.device(self._device):
-            self.generator_ = build_generator(self._n_features, self._n_features)
-            self.discriminator_ = build_discriminator(self._n_features)
+            self.generator_ = build_generator(
+                self._n_features, 
+                self._n_features, 
+                hidden_layers=self.generator_hidden_layers
+            )
+            self.discriminator_ = build_discriminator(
+                self._n_features,
+                hidden_layers=self.discriminator_hidden_layers
+            )
 
             self.discriminator_.compile(
                 loss='binary_crossentropy',
