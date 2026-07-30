@@ -14,6 +14,7 @@ import warnings
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import MinMaxScaler
 # Use tf.keras directly to avoid conflicts with standalone keras / JAX installations
 layers = tf.keras.layers
@@ -31,7 +32,7 @@ from ganfs.utils import preprocess_dataframe, setup_gpu
 logger = logging.getLogger("ganfs")
 
 
-class GANFS:
+class GANFS(BaseEstimator, TransformerMixin):
     """GAN-based Feature Selection.
 
     Trains a Generative Adversarial Network on the input data and uses
@@ -64,6 +65,9 @@ class GANFS:
         If True, log progress information during training and analysis.
     random_state : int or None, default None
         Random seed for reproducibility.
+    patience : int or None, default None
+        Number of epochs to wait for discriminator loss improvement before
+        stopping training early. If None, trains for all `epochs`.
 
     Attributes
     ----------
@@ -107,6 +111,7 @@ class GANFS:
         checkpoint_dir=None,
         verbose=True,
         random_state=None,
+        patience=None,
     ):
         self.epochs = epochs
         self.batch_size = batch_size
@@ -118,6 +123,7 @@ class GANFS:
         self.checkpoint_dir = checkpoint_dir
         self.verbose = verbose
         self.random_state = random_state
+        self.patience = patience
 
         # Internal state (set during fit)
         self.generator_ = None
@@ -154,8 +160,15 @@ class GANFS:
             Fitted GANFS instance.
         """
         if self.random_state is not None:
+            import random
+            random.seed(self.random_state)
             np.random.seed(self.random_state)
             tf.random.set_seed(self.random_state)
+            # Use keras native seed setter if available
+            try:
+                tf.keras.utils.set_random_seed(self.random_state)
+            except AttributeError:
+                pass
 
         # Configure logging
         if self.verbose:
@@ -543,6 +556,9 @@ class GANFS:
                 self.epochs, self.batch_size, self._device
             )
 
+        best_d_loss = float('inf')
+        wait = 0
+
         with tf.device(self._device):
             for epoch in range(self.epochs):
                 # --- Train Discriminator ---
@@ -569,8 +585,9 @@ class GANFS:
                 g_loss = self.gan_.train_on_batch(noise, valid_y)
 
                 # Logging and checkpointing
+                d_loss_val = d_loss[0] if isinstance(d_loss, (list, np.ndarray)) else d_loss
+                
                 if self.verbose and epoch % 20 == 0:
-                    d_loss_val = d_loss[0] if isinstance(d_loss, (list, np.ndarray)) else d_loss
                     d_acc = d_loss[1] if isinstance(d_loss, (list, np.ndarray)) and len(d_loss) > 1 else 0.0
                     logger.info(
                         "Epoch %04d: D_loss=%.4f (acc=%.2f%%), G_loss=%.4f",
@@ -578,6 +595,18 @@ class GANFS:
                     )
                     if checkpoint:
                         checkpoint.save(file_prefix=checkpoint_prefix)
+                
+                # Early stopping
+                if self.patience is not None:
+                    if d_loss_val < best_d_loss - 1e-4:
+                        best_d_loss = d_loss_val
+                        wait = 0
+                    else:
+                        wait += 1
+                        if wait >= self.patience:
+                            if self.verbose:
+                                logger.info("Early stopping triggered at epoch %d", epoch)
+                            break
 
         if self.verbose:
             logger.info("GAN training finished.")
