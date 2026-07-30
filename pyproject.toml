@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ganfs"
-version = "0.2.0"
+version = "0.2.1"
 description = "GANFS: GAN-based Feature Selection for Machine Learning"
 readme = "README.md"
 license = {text = "MIT"}
@@ -53,6 +53,7 @@ dev = [
 Homepage = "https://github.com/patelharsh15/GANFS-GAN-based-feature-selection"
 Repository = "https://github.com/patelharsh15/GANFS-GAN-based-feature-selection"
 Issues = "https://github.com/patelharsh15/GANFS-GAN-based-feature-selection/issues"
+Paper = "https://arxiv.org/abs/2504.18566"
 
 [tool.setuptools.packages.find]
 include = ["ganfs*"]

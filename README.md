@@ -3,6 +3,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/ganfs.svg)](https://pypi.org/project/ganfs/)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Paper](https://img.shields.io/badge/arXiv-2504.18566-B31B1B.svg)](https://arxiv.org/abs/2504.18566)
 
 A Python library for **feature selection using Generative Adversarial Networks**. GANFS trains a GAN on your data and uses perturbation-based sensitivity analysis on the discriminator to rank and select the most important features.
 
@@ -151,6 +152,22 @@ The original research uses the **CIC-DDoS2019** dataset. The dataset files are t
 - Python 3.8+
 - TensorFlow 2.x (GPU support recommended)
 - NumPy, Pandas, scikit-learn
+
+## Citation
+
+If you use **GANFS** in your research, please cite our paper:
+
+```bibtex
+@misc{patel2025ganfs,
+      title={GANFS: GAN-based Feature Selection for Machine Learning}, 
+      author={Harsh Patel},
+      year={2025},
+      eprint={2504.18566},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2504.18566}, 
+}
+```
 
 ## Acknowledgments
 
