@@ -8,7 +8,12 @@ A Python library for **feature selection using Generative Adversarial Networks**
 
 ## Installation
 
-**From GitHub (recommended for now):**
+**Install via PyPI (Recommended):**
+```bash
+pip install ganfs
+```
+
+**Install from GitHub (Latest Development Version):**
 ```bash
 pip install git+https://github.com/patelharsh15/GANFS-GAN-based-feature-selection.git
 ```
