@@ -69,6 +69,9 @@ loaded = GANFS.load("my_ganfs_model")
 | `checkpoint_dir` | str/None | None | Directory for training checkpoints |
 | `verbose` | bool | True | Print progress information |
 | `random_state` | int/None | None | Random seed for reproducibility |
+| `patience` | int/None | None | Early stopping patience (epochs to wait) |
+| `generator_hidden_layers` | tuple | (64, 128) | Generator Dense layer architecture |
+| `discriminator_hidden_layers` | tuple | (128, 64) | Discriminator Dense layer architecture |
 
 #### Methods
 
