@@ -115,18 +115,19 @@ print(f"Accuracy with top-20 GANFS features: {accuracy:.4f}")
 ## Project Structure
 
 ```
-├── ganfs/                           # Python package
+├── ganfs/                           # Python package source code
 │   ├── __init__.py                  # Public API
 │   ├── ganfs.py                     # Main GANFS class
 │   ├── models.py                    # Generator & Discriminator networks
 │   ├── sensitivity.py               # Sensitivity analysis functions
 │   └── utils.py                     # GPU setup & preprocessing utilities
 ├── pyproject.toml                   # Package build configuration
-├── GAN Algo Final.ipynb             # Original research notebook
-├── benchmarking.ipynb               # Benchmarking vs traditional methods
-├── training_checkpoints/            # Saved model checkpoints
-├── feature_pair_interactions.csv    # Feature interaction results
-└── feature_sensitivity_results.csv  # Feature sensitivity results
+└── research_archive/                # Original research files and experiments
+    ├── GAN Algo Final.ipynb         # Original research notebook
+    ├── benchmarking.ipynb           # Benchmarking vs traditional methods
+    ├── training_checkpoints/        # Saved model checkpoints
+    ├── feature_pair_interactions.csv
+    └── feature_sensitivity_results.csv
 ```
 
 ## Dataset Setup (for reproducing research results)

@@ -18,5 +18,5 @@ Quick Start::
 
 from ganfs.ganfs import GANFS
 
-__version__ = "0.1.0"
+__version__ = "0.1.2"
 __all__ = ["GANFS", "__version__"]
